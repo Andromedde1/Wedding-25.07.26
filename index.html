@@ -9,10 +9,9 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;600;700&display=swap" rel="stylesheet">
 </head>
-<body class="viewport-phone">
-  <!-- Переключатель: по умолчанию телефон, можно переключить на ПК -->
+<body>
   <div class="device-switcher">
-    <button type="button" class="device-btn active" data-view="phone" title="Вид как на телефоне">Телефон</button>
+    <button type="button" class="device-btn" data-view="phone" title="Вид как на телефоне">Телефон</button>
     <button type="button" class="device-btn" data-view="desktop" title="Вид как на компьютере">ПК</button>
   </div>
 
@@ -186,12 +185,14 @@
               <img src="assets/schedule-music.jpg" onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=200&q=80'" alt="Музыка">
             </div>
           </li>
-          <li class="schedule-item schedule-item-end">
+          <li class="schedule-item">
             <div class="schedule-item-content">
               <span class="schedule-time">22:00</span>
               <span class="schedule-text">Завершение вечера</span>
             </div>
-            <p class="schedule-the-end">The End</p>
+            <div class="schedule-pic">
+              <img src="assets/schedule-end.jpg" onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1464366400600-716ab811b04d?w=200&q=80'" alt="Завершение вечера">
+            </div>
           </li>
         </ul>
       </div>
@@ -215,7 +216,7 @@
       <div class="container">
         <h2 class="section-title">Дресс-код</h2>
         <p class="decor-love decor-love-inline">выберите свой цвет</p>
-        <p class="dresscode-intro dresscode-intro-main">Мы очень ждём и готовимся к нашему незабываемому дню! Поддержите нас Вашими улыбками и объятиями, а также красивыми нарядами в палитре мероприятия(подразумеваются любые оттенки цветов)</p>
+        <p class="dresscode-intro dresscode-intro-main">Мы очень ждём и готовимся к нашему незабываемому дню! Поддержите нас Вашими улыбками и объятиями, а также красивыми нарядами в палитре мероприятия(подразумеваются любые оттенки цветов, как целиком костюма, так и выделяющегося элемента одежды)</p>
         <div class="dresscode-circles">
           <div class="color-group">
             <div class="color-row">
@@ -327,15 +328,50 @@
               <option value="no">К сожалению, не смогу</option>
             </select>
           </label>
-          <div class="form-group form-group-hidden" id="mood-group">
-            <label class="form-label">
-              <span>Готовы принести с собой хорошее настроение?</span>
-              <select name="mood" class="form-select">
-                <option value="">Выберите ответ</option>
-                <option value="yes">Конечно!</option>
-                <option value="maybe">Постараюсь</option>
-              </select>
-            </label>
+
+          <div class="form-group form-group-hidden rsvp-when-yes" id="rsvp-when-yes">
+            <div class="rsvp-subblock">
+              <label class="form-label">
+                <span>Вы придете с детьми?</span>
+                <select name="children" id="children" class="form-select">
+                  <option value="">Выберите ответ</option>
+                  <option value="with_kids">Да, будем поздравлять вместе</option>
+                  <option value="without_kids">Нет, приду без них</option>
+                  <option value="no_children">Нет детей</option>
+                </select>
+              </label>
+              <div class="form-group form-group-hidden" id="children-extra">
+                <label class="form-label">
+                  <span>Количество детей</span>
+                  <input type="number" name="children_count" id="children_count" class="form-input" min="1" max="20" placeholder="Число">
+                </label>
+                <label class="form-label">
+                  <span>Возраст детей</span>
+                  <input type="text" name="children_ages" id="children_ages" class="form-input" placeholder="Например: 4 и 7 лет">
+                </label>
+              </div>
+            </div>
+
+            <div class="rsvp-subblock">
+              <label class="form-label">
+                <span>Придете ли вы одни?</span>
+                <select name="companionship" id="companionship" class="form-select">
+                  <option value="">Выберите ответ</option>
+                  <option value="alone">Да, приду один / одна</option>
+                  <option value="with_partner">Приду с партнёром / второй половинкой</option>
+                </select>
+              </label>
+              <div class="form-group form-group-hidden" id="partner-extra">
+                <label class="form-label">
+                  <span>Имя спутника</span>
+                  <input type="text" name="companion_name" id="companion_name" class="form-input" placeholder="Имя">
+                </label>
+                <label class="form-label">
+                  <span>Фамилия спутника</span>
+                  <input type="text" name="companion_surname" id="companion_surname" class="form-input" placeholder="Фамилия">
+                </label>
+              </div>
+            </div>
           </div>
           <button type="submit" class="btn-submit">Отправить</button>
         </form>
