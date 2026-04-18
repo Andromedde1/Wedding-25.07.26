@@ -1,6 +1,5 @@
 (function () {
   'use strict';
-
   // --- Переключатель вид: телефон / компьютер ---
   function initDeviceSwitcher() {
     var body = document.body;
@@ -13,6 +12,21 @@
         body.classList.remove('viewport-phone', 'viewport-desktop');
         body.classList.add(view === 'phone' ? 'viewport-phone' : 'viewport-desktop');
       });
+    });
+  }
+
+  function detectDevice() {
+    var body = document.body;
+    var btns = document.querySelectorAll('.device-btn');
+  
+    var isPhone = window.innerWidth <= 768;
+    var view = isPhone ? 'phone' : 'desktop';
+  
+    body.classList.remove('viewport-phone', 'viewport-desktop');
+    body.classList.add(view === 'phone' ? 'viewport-phone' : 'viewport-desktop');
+  
+    btns.forEach(function (btn) {
+      btn.classList.toggle('active', btn.getAttribute('data-view') === view);
     });
   }
 
@@ -86,23 +100,61 @@
 
   function initRsvp() {
     var coming = document.getElementById('coming');
-    var moodGroup = document.getElementById('mood-group');
-    if (!coming || !moodGroup) return;
+    var whenYes = document.getElementById('rsvp-when-yes');
+    var childrenSel = document.getElementById('children');
+    var childrenExtra = document.getElementById('children-extra');
+    var companionSel = document.getElementById('companionship');
+    var partnerExtra = document.getElementById('partner-extra');
+    if (!coming || !whenYes) return;
 
-    coming.addEventListener('change', function () {
-      if (this.value === 'yes') {
-        moodGroup.classList.add('form-group-visible');
-        moodGroup.classList.remove('form-group-hidden');
+    function setHidden(el, hidden) {
+      if (!el) return;
+      if (hidden) {
+        el.classList.add('form-group-hidden');
+        el.classList.remove('form-group-visible');
       } else {
-        moodGroup.classList.remove('form-group-visible');
-        moodGroup.classList.add('form-group-hidden');
+        el.classList.remove('form-group-hidden');
+        el.classList.add('form-group-visible');
       }
-    });
+    }
+
+    function setDisabledDeep(root, disabled) {
+      if (!root) return;
+      root.querySelectorAll('input, select, textarea').forEach(function (field) {
+        field.disabled = !!disabled;
+      });
+    }
+
+    function syncRsvp() {
+      if (coming.value !== 'yes') {
+        setHidden(whenYes, true);
+        setDisabledDeep(whenYes, true);
+        return;
+      }
+
+      setHidden(whenYes, false);
+      childrenSel.disabled = false;
+      companionSel.disabled = false;
+
+      var showKids = childrenSel.value === 'with_kids';
+      setHidden(childrenExtra, !showKids);
+      setDisabledDeep(childrenExtra, !showKids);
+
+      var showPartner = companionSel.value === 'with_partner';
+      setHidden(partnerExtra, !showPartner);
+      setDisabledDeep(partnerExtra, !showPartner);
+    }
+
+    coming.addEventListener('change', syncRsvp);
+    childrenSel.addEventListener('change', syncRsvp);
+    companionSel.addEventListener('change', syncRsvp);
+
+    syncRsvp();
 
     var form = document.getElementById('rsvp-form');
     if (!form) return;
-    form.addEventListener('submit', function (e) {
-      /* Форма отправляется на Formspree */
+    form.addEventListener('submit', function () {
+      /* Formspree */
     });
   }
 
@@ -111,4 +163,6 @@
   updateCountdown();
   setInterval(updateCountdown, 1000);
   initRsvp();
+  detectDevice();
+  window.addEventListener('resize', detectDevice);
 })();
